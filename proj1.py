@@ -95,7 +95,7 @@ if cluster_alg == 'kmeans':
 
   clustering = [];
   for d in dataset:
-    for c_num, c in enumerate(clusters.values()):
+    for c_num, c in enumerate(best_clusters.values()):
       if d in c:
         clustering.append(c_num)
   print('A = [', end='')
