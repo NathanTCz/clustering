@@ -39,6 +39,13 @@ def recalc_centers (clusters):
 
   return new_centers
 
+def kmeans_cost (clusters, centers):
+  keys = clusters.keys();
+  print(keys, centers)
+  for key, center in zip(keys, centers):
+    if key == str(center):
+      print(center)
+
 fname = sys.argv[1]
 k_clusters = int(sys.argv[2])
 cluster_alg = str(sys.argv[3])
@@ -65,10 +72,15 @@ if cluster_alg == 'kmeans':
     # Recalculate centers
     centers = recalc_centers(clusters)
 
+  # Calcualte K-means cost
+  #kmeans_cost(clusters, centers)
+
+  # Print clustering assignments
   clustering = [];
   for d in dataset:
     for c_num, c in enumerate(clusters.values()):
       if d in c:
         clustering.append(c_num)
-
-  print('A =', clustering)
+  print('A = [', end='')
+  print(*clustering, sep=',', end='')
+  print(']')
