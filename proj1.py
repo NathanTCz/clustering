@@ -69,21 +69,30 @@ with open( sys.argv[1], 'r' ) as f:
       dataset.append(save);
 
 if cluster_alg == 'kmeans':
-  old_centers = []
-  centers = random.sample( dataset, k_clusters )
-  #centers = [[2.7], [1.7], [3.0]]
+  best_kmcost = float(9999999999999999999999999)
+  best_clusters = {}
 
-  while not centers == old_centers:
-    old_centers = centers
-    clusters = cluster_points(dataset, centers)
+  for n in range(100):
+    old_centers = []
+    centers = random.sample( dataset, k_clusters )
+    #centers = [[2.7], [1.7], [3.0]]
 
-    # Recalculate centers
-    centers = recalc_centers(clusters)
+    while not centers == old_centers:
+      old_centers = centers
+      clusters = cluster_points(dataset, centers)
 
-  # Calcualte K-means cost
-  print(kmeans_cost(clusters, centers))
+      # Recalculate centers
+      centers = recalc_centers(clusters)
+
+    # Calcualte K-means cost
+    km_cost = kmeans_cost(clusters, centers)
+    if (km_cost < best_kmcost):
+      best_kmcost = km_cost
+      best_clusters = clusters
 
   # Print clustering assignments
+  print(best_kmcost)
+
   clustering = [];
   for d in dataset:
     for c_num, c in enumerate(clusters.values()):
