@@ -48,7 +48,7 @@ dataset = []
 with open( sys.argv[1], 'r' ) as f:
   for line in f:
     save = []
-    cur_line = (line.strip()).split(' ')
+    cur_line = line.split()
     for num in cur_line:
       save.append( float(num) )
       dataset.append(save);
