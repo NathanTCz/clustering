@@ -40,11 +40,19 @@ def recalc_centers (clusters):
   return new_centers
 
 def kmeans_cost (clusters, centers):
-  keys = clusters.keys();
-  print(keys, centers)
+  km_cost = float(0)
+  keys = sorted( clusters.keys() )
+  centers = sorted(centers)
+
   for key, center in zip(keys, centers):
     if key == str(center):
-      print(center)
+      for vector in clusters[key]:
+        distance = 0
+        for v, c in zip(vector, center):
+          distance += ( (v - c)**2 )
+    km_cost += distance
+
+  return km_cost
 
 fname = sys.argv[1]
 k_clusters = int(sys.argv[2])
@@ -73,7 +81,7 @@ if cluster_alg == 'kmeans':
     centers = recalc_centers(clusters)
 
   # Calcualte K-means cost
-  #kmeans_cost(clusters, centers)
+  print(kmeans_cost(clusters, centers))
 
   # Print clustering assignments
   clustering = [];
