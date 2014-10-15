@@ -3,7 +3,7 @@ import random
 import string
 
 def calc_closest (vector, centers):
-  closest_dist = 999999999999999999
+  closest_dist = float("inf")
   closest_center = []
 
   for center in centers:
@@ -60,7 +60,7 @@ cluster_alg = str(sys.argv[3])
 dataset = []
 
 # Read in data
-with open( sys.argv[1], 'r' ) as f:
+with open( fname, 'r' ) as f:
   for line in f:
     save = []
     cur_line = line.split()
@@ -69,7 +69,7 @@ with open( sys.argv[1], 'r' ) as f:
       dataset.append(save);
 
 if cluster_alg == 'kmeans':
-  best_kmcost = float(9999999999999999999999999)
+  best_kmcost = float("inf")
   best_clusters = {}
 
   for n in range(100):
