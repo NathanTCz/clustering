@@ -12,6 +12,12 @@ import sys
 import random
 import string
 
+def find_in_cluster (point, clusters):
+  clustering = []
+  for c_num, c in enumerate( sorted( clusters.values() ) ):
+    if d in c:
+      return c_num
+
 fname = sys.argv[1]
 k_clusters = int(sys.argv[2])
 cluster_alg = str(sys.argv[3])
@@ -31,7 +37,7 @@ with open( fname, 'r' ) as f:
     cur_line = line.split()
     for num in cur_line:
       save.append( float(num) )
-      dataset.append(save);
+    dataset.append(save);
 
 # ----------------- K-MEANS CLUSTERING --------------------
 # Inital centers are randomly chosen from the given data
@@ -58,7 +64,7 @@ def calc_closest (vector, centers):
 
   return str(closest_center)
 
-def cluster_points (dataset, centers):
+def clusterize (dataset, centers):
   clusters  = {}
   for d in dataset:
     closest_center = calc_closest(d, centers)
@@ -105,7 +111,7 @@ if cluster_alg == 'kmeans':
 
     while not centers == old_centers:
       old_centers = centers
-      clusters = cluster_points(dataset, centers)
+      clusters = clusterize(dataset, centers)
 
       # Recalculate centers
       centers = recalc_centers(clusters)
@@ -119,11 +125,9 @@ if cluster_alg == 'kmeans':
   # Print clustering assignments
   print(best_kmcost)
 
-  clustering = [];
+  clustering = []
   for d in dataset:
-    for c_num, c in enumerate(best_clusters.values()):
-      if d in c:
-        clustering.append(c_num)
+    clustering.append( find_in_cluster(d, best_clusters) )
   print('A = [', end='')
   print(*clustering, sep=',', end='')
   print(']')
@@ -134,3 +138,54 @@ if cluster_alg == 'kmeans':
 # is calculated by calculating the between cluster distance for each
 # point in the cluster and then averaging those distances. The closest
 # clusters are then merged.
+
+def hierchical_cluster (clusters):
+  # Find the two most similar points
+  closest_dist = float("inf")
+  merge_cluster = []
+
+  for c1 in sorted(clusters.values()):
+    for c2 in sorted(clusters.values()):
+      dist = float(0.0)
+      if not c1 == c2:
+        for p1, p2 in zip(c1, c2):
+          for n1, n2 in zip(p1, p2):
+            dist += abs(n1 - n2)
+        dist = dist / ( len(c1)*len(c2) )
+        if dist < closest_dist:
+          closest_dist = dist
+          merge_cluster = c1 + c2
+          pop_keys = []
+          pop_keys.append( str(c1)[1:-1] )
+          pop_keys.append( str(c2)[1:-1] )
+
+  for key in pop_keys:
+    clusters.pop( str(key) )
+  clusters[ str(merge_cluster)[1:-1] ] = merge_cluster
+
+  return clusters
+
+def init_avg_clust (data):
+  clusters = {}
+
+  for d in data:
+    clusters[ str(d) ] = [d]
+
+  return clusters
+
+if cluster_alg == 'average':
+  num_clust = len(dataset)
+  while not num_clust == k_clusters:
+    # init n clusters on first iteration
+    if num_clust == len(dataset):
+      clusters = init_avg_clust(dataset)
+
+    clusters = hierchical_cluster(clusters)
+    num_clust = len(clusters)
+
+  clustering = []
+  for d in dataset:
+    clustering.append( find_in_cluster(d, clusters) )
+  print('A = [', end='')
+  print(*clustering, sep=',', end='')
+  print(']')
