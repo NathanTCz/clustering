@@ -7,7 +7,7 @@ Average Linkage Hierarchical clustering algorithms.
 
 REQUIREMENTS:
   - Python 3
-  - matplotlib (required only for 2d visualization)
+  - matplotlib (required only for 2D/3D visualization)
 
 USE:
   python3 proj1.py <DATASET> <#CLUSTERS> <ALGORITHM>

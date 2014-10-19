@@ -20,6 +20,13 @@ except ImportError:
   print('Python Library: \'matplotlib\' missing, 2D visualisation not supported')
   twoD_supported = False
 
+threeD_supported = True
+try:
+  from mpl_toolkits.mplot3d import Axes3D
+except ImportError:
+  print('Python Library: \'mpl_toolkits\' missing, 3D visualisation not supported')
+  threeD_supported = False
+
 
 def find_in_cluster (point, clusters):
   clustering = []
@@ -31,6 +38,7 @@ fname = sys.argv[1]
 k_clusters = int(sys.argv[2])
 cluster_alg = str(sys.argv[3])
 dataset = []
+colors = "cmykwrgb"
 
 # Read in data
 # FORMAT:
@@ -144,14 +152,26 @@ if cluster_alg == 'kmeans':
   # ---- 2D Color Coded Scatter Plot -----
   # only print if using 2 dimensional data
   if len( dataset[0] ) == 2 and twoD_supported:
-    colors = "cmykwrgb"
-
     for d in dataset:
       x = d[0]
       y = d[1]
       color = colors[ find_in_cluster (d, clusters) ];
 
       plt.scatter(x, y, s=80, c=color, alpha=0.5)
+    plt.show()
+
+  # ---- 3D Color Coded Scatter Plot -----
+  # only print if using 3 dimensional data
+  if len( dataset[0] ) == 3 and twoD_supported and threeD_supported:
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    for d in dataset:
+      x = d[0]
+      y = d[1]
+      z = d[2]
+      color = colors[ find_in_cluster (d, clusters) ];
+
+      ax.scatter(x, y, z, s=40, c=color, alpha=0.5)
     plt.show()
 
 # ------------------ AVERAGE LINKAGE CLUSTERING ------------------
@@ -212,3 +232,28 @@ if cluster_alg == 'average':
   print('A = [', end='')
   print(*clustering, sep=',', end='')
   print(']')
+
+  # ---- 2D Color Coded Scatter Plot -----
+  # only print if using 2 dimensional data
+  if len( dataset[0] ) == 2 and twoD_supported:
+    for d in dataset:
+      x = d[0]
+      y = d[1]
+      color = colors[ find_in_cluster (d, clusters) ];
+
+      plt.scatter(x, y, s=80, c=color, alpha=0.5)
+    plt.show()
+
+  # ---- 3D Color Coded Scatter Plot -----
+  # only print if using 3 dimensional data
+  if len( dataset[0] ) == 3 and twoD_supported and threeD_supported:
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    for d in dataset:
+      x = d[0]
+      y = d[1]
+      z = d[2]
+      color = colors[ find_in_cluster (d, clusters) ];
+
+      ax.scatter(x, y, z, s=40, c=color, alpha=0.5)
+    plt.show()
