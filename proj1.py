@@ -12,6 +12,15 @@ import sys
 import random
 import string
 
+# Determine if 2D visualisation libraray is present
+twoD_supported = True
+try:
+  import matplotlib.pyplot as plt
+except ImportError:
+  print('Python Library: \'matplotlib\' missing, 2D visualisation not supported')
+  twoD_supported = False
+
+
 def find_in_cluster (point, clusters):
   clustering = []
   for c_num, c in enumerate( sorted( clusters.values() ) ):
@@ -131,6 +140,19 @@ if cluster_alg == 'kmeans':
   print('A = [', end='')
   print(*clustering, sep=',', end='')
   print(']')
+
+  # ---- 2D Color Coded Scatter Plot -----
+  # only print if using 2 dimensional data
+  if len( dataset[0] ) == 2 and twoD_supported:
+    colors = "cmykwrgb"
+
+    for d in dataset:
+      x = d[0]
+      y = d[1]
+      color = colors[ find_in_cluster (d, clusters) ];
+
+      plt.scatter(x, y, s=80, c=color, alpha=0.5)
+    plt.show()
 
 # ------------------ AVERAGE LINKAGE CLUSTERING ------------------
 # Each point starts as its own cluster. The cluster are then merged
