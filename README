@@ -1,0 +1,20 @@
+ASSIGNMENT #3 - Clustering Implementation
+Author: Nathan Cazell
+Date: 10/19/2014
+
+This python script implements the Lloyds method or K-Means and
+Average Linkage Hierarchical clustering algorithms.
+
+REQUIREMENTS:
+  - Python 3
+
+USE:
+  python3 proj1.py <DATASET> <#CLUSTERS> <ALGORITHM>
+
+  <DATASET>
+    This can be a space delimited or tab delimited file of
+    data points
+  <#CLUSTERS>
+    The number of cluster desired
+  <ALGORITHM>
+    'kmeans' or 'average'
