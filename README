@@ -7,6 +7,13 @@ Average Linkage Hierarchical clustering algorithms.
 
 REQUIREMENTS:
   - Python 3
+  - Python Libraries:
+    * sys
+    * random
+    * string
+    * time
+      Note: these libraries should be available by default and
+            should not require and extra installation.
 
 USE:
   python3 proj1.py <DATASET> <#CLUSTERS> <ALGORITHM>

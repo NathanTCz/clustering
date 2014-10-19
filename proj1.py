@@ -11,6 +11,7 @@
 import sys
 import random
 import string
+import time
 
 def find_in_cluster (point, clusters):
   clustering = []
@@ -103,6 +104,7 @@ def kmeans_cost (clusters, centers):
 if cluster_alg == 'kmeans':
   best_kmcost = float("inf")
   best_clusters = {}
+  start_time = time.time()
 
   for n in range(100):
     old_centers = []
@@ -121,9 +123,11 @@ if cluster_alg == 'kmeans':
     if (km_cost < best_kmcost):
       best_kmcost = km_cost
       best_clusters = clusters
+  run_time = time.time() - start_time
 
   # Print clustering assignments
-  print(best_kmcost)
+  print('running-time: ', run_time)
+  print('k-means cost: ', best_kmcost)
 
   clustering = []
   for d in dataset:
