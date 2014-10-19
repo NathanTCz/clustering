@@ -102,9 +102,9 @@ def kmeans_cost (clusters, centers):
   return km_cost
 
 if cluster_alg == 'kmeans':
+  start_time = time.time()
   best_kmcost = float("inf")
   best_clusters = {}
-  start_time = time.time()
 
   for n in range(100):
     old_centers = []
@@ -147,6 +147,7 @@ def hierchical_cluster (clusters):
   # Find the two most similar points
   closest_dist = float("inf")
   merge_cluster = []
+  start_time = time.time()
 
   for c1 in sorted(clusters.values()):
     for c2 in sorted(clusters.values()):
@@ -179,6 +180,8 @@ def init_avg_clust (data):
   return clusters
 
 if cluster_alg == 'average':
+  start_time = time.time()
+
   num_clust = len(dataset)
   while not num_clust == k_clusters:
     # init n clusters on first iteration
@@ -187,6 +190,9 @@ if cluster_alg == 'average':
 
     clusters = hierchical_cluster(clusters)
     num_clust = len(clusters)
+  run_time = time.time() - start_time
+
+  print('running-time: ', run_time)
 
   clustering = []
   for d in dataset:
