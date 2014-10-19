@@ -11,7 +11,14 @@
 import sys
 import random
 import string
-import matplotlib.pyplot as plt
+
+# Determine if 2D visualisation libraray is present
+twoD_supported = True
+try:
+  import matplotlib.pyplot as plt
+except ImportError:
+  print('Python Library: \'matplotlib\' missing, 2D visualisation not supported')
+  twoD_supported = False
 
 
 def find_in_cluster (point, clusters):
@@ -136,7 +143,7 @@ if cluster_alg == 'kmeans':
 
   # ---- 2D Color Coded Scatter Plot -----
   # only print if using 2 dimensional data
-  if len( dataset[0] ) == 2:
+  if len( dataset[0] ) == 2 and twoD_supported:
     colors = "cmykwrgb"
 
     for d in dataset:
