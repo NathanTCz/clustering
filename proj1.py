@@ -11,6 +11,8 @@
 import sys
 import random
 import string
+import matplotlib.pyplot as plt
+
 
 def find_in_cluster (point, clusters):
   clustering = []
@@ -131,6 +133,19 @@ if cluster_alg == 'kmeans':
   print('A = [', end='')
   print(*clustering, sep=',', end='')
   print(']')
+
+  # ---- 2D Color Coded Scatter Plot -----
+  # only print if using 2 dimensional data
+  if len( dataset[0] ) == 2:
+    colors = "cmykwrgb"
+
+    for d in dataset:
+      x = d[0]
+      y = d[1]
+      color = colors[ find_in_cluster (d, clusters) ];
+
+      plt.scatter(x, y, s=80, c=color, alpha=0.5)
+    plt.show()
 
 # ------------------ AVERAGE LINKAGE CLUSTERING ------------------
 # Each point starts as its own cluster. The cluster are then merged
