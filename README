@@ -6,7 +6,7 @@ This python script implements the Lloyds method or K-Means and
 Average Linkage Hierarchical clustering algorithms.
 
 REQUIREMENTS:
-  - Python 3
+  - Python 3.x
   - matplotlib (required only for 2D/3D visualization)
   - Python Libraries:
     * sys

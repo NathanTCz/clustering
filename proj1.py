@@ -197,8 +197,9 @@ def hierchical_cluster (clusters):
       if not c1 == c2:
         for p1 in c1:
           for p2 in c2:
-            for n1, n2 in zip(p1, p2):
-              dist += abs(n1 - n2)
+            if not p1 == p2:
+              for n1, n2 in zip(p1, p2):
+                dist += abs(n1 - n2)
         dist = dist / ( len(c1)*len(c2) )
         if dist < closest_dist:
           closest_dist = dist
