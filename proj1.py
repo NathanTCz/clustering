@@ -255,38 +255,38 @@ if cluster_alg == 'average':
   print(*clustering, sep=',', end='')
   print(']')
 
-# ---- 2D Color Coded Scatter Plot -----
-# only print if using 2 dimensional data
-if len( dataset[0] ) == 2 and twoD_supported:
-  # generate random colors for each cluster
-  colors = {}
-  for c_num, c in enumerate(clusters.values()):
-    colors[c_num] = np.random.rand( 4 )  # because its an RGBA value
+  # ---- 2D Color Coded Scatter Plot -----
+  # only print if using 2 dimensional data
+  if len( dataset[0] ) == 2 and twoD_supported:
+    # generate random colors for each cluster
+    colors = {}
+    for c_num, c in enumerate(clusters.values()):
+      colors[c_num] = np.random.rand( 4 )  # because its an RGBA value
 
-  for d in dataset:
-    x = d[0]
-    y = d[1]
-    color = colors[ find_in_cluster (d, clusters) ]
+    for d in dataset:
+      x = d[0]
+      y = d[1]
+      color = colors[ find_in_cluster (d, clusters) ]
 
-    plt.scatter(x, y, s=80, c=color)
-  plt.show()
+      plt.scatter(x, y, s=80, c=color)
+    plt.show()
 
-# ---- 3D Color Coded Scatter Plot -----
-# only print if using 3 dimensional data
-if len( dataset[0] ) == 3 and twoD_supported and threeD_supported:
-  # generate random colors for each cluster
-  colors = {}
-  for c_num, c in enumerate(clusters.values()):
-    colors[c_num] = np.random.rand( 4 ) # because its an RGBA value
+  # ---- 3D Color Coded Scatter Plot -----
+  # only print if using 3 dimensional data
+  if len( dataset[0] ) == 3 and twoD_supported and threeD_supported:
+    # generate random colors for each cluster
+    colors = {}
+    for c_num, c in enumerate(clusters.values()):
+      colors[c_num] = np.random.rand( 4 ) # because its an RGBA value
 
-  fig = plt.figure()
-  ax = fig.add_subplot(111, projection='3d')
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
 
-  for d in dataset:
-    x = d[0]
-    y = d[1]
-    z = d[2]
-    color = colors[ find_in_cluster (d, clusters) ]
+    for d in dataset:
+      x = d[0]
+      y = d[1]
+      z = d[2]
+      color = colors[ find_in_cluster (d, clusters) ]
 
-    ax.scatter(x, y, z, s=40, c=color)
-  plt.show()
+      ax.scatter(x, y, z, s=40, c=color)
+    plt.show()
