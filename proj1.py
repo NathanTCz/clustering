@@ -166,7 +166,7 @@ if cluster_alg == 'kmeans':
       y = d[1]
       color = colors[ find_in_cluster (d, clusters) ]
 
-      plt.scatter(x, y, s=80, c=color)
+      plt.scatter(x, y, s=80, c=color, alpha=0.8)
     plt.show()
 
   # ---- 3D Color Coded Scatter Plot -----
@@ -186,7 +186,7 @@ if cluster_alg == 'kmeans':
       z = d[2]
       color = colors[ find_in_cluster (d, clusters) ]
 
-      ax.scatter(x, y, z, s=40, c=color)
+      ax.scatter(x, y, z, s=40, c=color, alpha=0.8)
     plt.show()
 
 # ------------------ AVERAGE LINKAGE CLUSTERING ------------------
@@ -268,7 +268,7 @@ if cluster_alg == 'average':
       y = d[1]
       color = colors[ find_in_cluster (d, clusters) ]
 
-      plt.scatter(x, y, s=80, c=color)
+      plt.scatter(x, y, s=80, c=color, alpha=0.8)
     plt.show()
 
   # ---- 3D Color Coded Scatter Plot -----
@@ -288,5 +288,5 @@ if cluster_alg == 'average':
       z = d[2]
       color = colors[ find_in_cluster (d, clusters) ]
 
-      ax.scatter(x, y, z, s=40, c=color)
+      ax.scatter(x, y, z, s=40, c=color, alpha=0.8)
     plt.show()
