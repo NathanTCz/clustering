@@ -35,13 +35,12 @@ def find_in_cluster (point, clusters):
     if point in clusters[key]:
       return c_num
 
-def print_clusterings (dataset, clusters):
+def get_clusterings (dataset, clusters):
   clustering = []
   for d in dataset:
     clustering.append( find_in_cluster(d, clusters) )
-  print('A = [', end='')
-  print(*clustering, sep=',', end='')
-  print(']')
+
+  return clustering
 
 fname = sys.argv[1]
 k_clusters = int(sys.argv[2])
@@ -160,7 +159,12 @@ if cluster_alg == 'kmeans':
   # Print clustering assignments
   print('running-time: ', run_time)
   print('k-means cost: ', kmcost)
-  print_clusterings(dataset, clusters)
+
+  clustering = get_clusterings(dataset, clusters)
+
+  print('A = [', end='')
+  print(*clustering, sep=',', end='')
+  print(']')
 
   # ---- 2D Color Coded Scatter Plot -----
   # only print if using 2 dimensional data
@@ -276,7 +280,12 @@ if cluster_alg == 'average':
   run_time = time.time() - start_time
 
   print('running-time: ', run_time)
-  print_clusterings(dataset, clusters)
+
+  clustering = get_clusterings(dataset, clusters)
+
+  print('A = [', end='')
+  print(*clustering, sep=',', end='')
+  print(']')
 
   # ---- 2D Color Coded Scatter Plot -----
   # only print if using 2 dimensional data
@@ -317,12 +326,34 @@ if cluster_alg == 'average':
 # ------------------- HAMMING DISTANCE -------------------------
 # The hamming distance between two clusterings is the number of
 # positions where each clustering differs.
+def hamming_dist (c1, c2, n):
+  dist = float(0.0)
 
-def hamming_dist (c1, c2):
-  print()
+  for i in range(n):
+    for j in range(i, n):
+      if ( (c1[i] != c1[j] and c2[i] == c2[j]) or (c1[i] == c1[j] and c2[i] != c2[j]) ):
+        dist += 1.0
+
+  n = float(n)
+  dist = dist / ( n * (n-1) / 2 )
+
+  return dist
 
 if cluster_alg == 'hamming':
-  lloyds_clusters = lloyds_method(dataset)
-  kmcost, average_clusters, centers = lloyds_method(dataset)
+  average_clusters = average_linkage(dataset)
+  kmcost, lloyds_clusters, centers = lloyds_method(dataset)
 
-  print_clusterings(dataset, average_clusters)
+  lloyds_clustering = get_clusterings(dataset, lloyds_clusters)
+  average_clustering = get_clusterings(dataset, average_clusters)
+
+  print('average: A = [', end='')
+  print(*average_clustering, sep=',', end='')
+  print(']')
+
+  print('kmeans:  A = [', end='')
+  print(*lloyds_clustering, sep=',', end='')
+  print(']')
+
+  dist = hamming_dist(average_clustering, lloyds_clustering, len(dataset))
+
+  print('hamming-dist: ', dist)
