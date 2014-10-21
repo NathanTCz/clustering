@@ -113,6 +113,7 @@ def kmeans_cost (clusters, centers):
   km_cost = float(0)
   keys = sorted( clusters.keys() )
   centers = sorted(centers)
+  distance = 0
 
   for key, center in zip(keys, centers):
     if key == str(center):
