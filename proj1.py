@@ -29,12 +29,18 @@ except ImportError:
   print('Python Library: \'mpl_toolkits\' missing, 3D visualisation not supported')
   threeD_supported = False
 
-
+# START - GENERIC FUNCTIONS
 def find_in_cluster (point, clusters):
-  clustering = []
   for c_num, key in enumerate( sorted(clusters) ):
     if point in clusters[key]:
       return c_num
+
+def get_clusterings (dataset, clusters):
+  clustering = []
+  for d in dataset:
+    clustering.append( find_in_cluster(d, clusters) )
+
+  return clustering
 
 fname = sys.argv[1]
 k_clusters = int(sys.argv[2])
@@ -118,15 +124,14 @@ def kmeans_cost (clusters, centers):
 
   return km_cost
 
-if cluster_alg == 'kmeans':
-  start_time = time.time()
+def lloyds_method (dataset):
   best_kmcost = float("inf")
   best_clusters = {}
+  best_centers = []
 
   for n in range(100):
     old_centers = []
     centers = random.sample( dataset, k_clusters )
-    #centers = [[2.7], [1.7], [3.0]]
 
     while not centers == old_centers:
       old_centers = centers
@@ -140,15 +145,23 @@ if cluster_alg == 'kmeans':
     if (km_cost < best_kmcost):
       best_kmcost = km_cost
       best_clusters = clusters
+      best_centers = centers
+
+  return (best_kmcost, best_clusters, best_centers)
+
+if cluster_alg == 'kmeans':
+  start_time = time.time()
+
+  kmcost, clusters, centers = lloyds_method(dataset)
+
   run_time = time.time() - start_time
 
   # Print clustering assignments
   print('running-time: ', run_time)
-  print('k-means cost: ', best_kmcost)
+  print('k-means cost: ', kmcost)
 
-  clustering = []
-  for d in dataset:
-    clustering.append( find_in_cluster(d, best_clusters) )
+  clustering = get_clusterings(dataset, clusters)
+
   print('A = [', end='')
   print(*clustering, sep=',', end='')
   print(']')
@@ -248,9 +261,7 @@ def init_avg_clust (data):
 
   return clusters
 
-if cluster_alg == 'average':
-  start_time = time.time()
-
+def average_linkage (dataset):
   num_clust = len(dataset)
   while not num_clust == k_clusters:
     # init n clusters on first iteration
@@ -259,13 +270,19 @@ if cluster_alg == 'average':
 
     clusters = hierchical_cluster(clusters)
     num_clust = len(clusters)
+  return clusters
+
+if cluster_alg == 'average':
+  start_time = time.time()
+
+  clusters = average_linkage(dataset)
+
   run_time = time.time() - start_time
 
   print('running-time: ', run_time)
 
-  clustering = []
-  for d in dataset:
-    clustering.append( find_in_cluster(d, clusters) )
+  clustering = get_clusterings(dataset, clusters)
+
   print('A = [', end='')
   print(*clustering, sep=',', end='')
   print(']')
@@ -305,3 +322,38 @@ if cluster_alg == 'average':
 
       ax.scatter(x, y, z, s=40, c=color, alpha=0.8)
     plt.show()
+
+# ------------------- HAMMING DISTANCE -------------------------
+# The hamming distance between two clusterings is the number of
+# positions where each clustering differs.
+def hamming_dist (c1, c2, n):
+  dist = float(0.0)
+
+  for i in range(n):
+    for j in range(i, n):
+      if ( (c1[i] != c1[j] and c2[i] == c2[j]) or (c1[i] == c1[j] and c2[i] != c2[j]) ):
+        dist += 1.0
+
+  n = float(n)
+  dist = dist / ( n * (n-1) / 2 )
+
+  return dist
+
+if cluster_alg == 'hamming':
+  average_clusters = average_linkage(dataset)
+  kmcost, lloyds_clusters, centers = lloyds_method(dataset)
+
+  lloyds_clustering = get_clusterings(dataset, lloyds_clusters)
+  average_clustering = get_clusterings(dataset, average_clusters)
+
+  print('average: A = [', end='')
+  print(*average_clustering, sep=',', end='')
+  print(']')
+
+  print('kmeans:  A = [', end='')
+  print(*lloyds_clustering, sep=',', end='')
+  print(']')
+
+  dist = hamming_dist(average_clustering, lloyds_clustering, len(dataset))
+
+  print('hamming-dist: ', dist)
