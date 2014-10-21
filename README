@@ -26,3 +26,8 @@ USE:
     The number of cluster desired
   <ALGORITHM>
     'kmeans' or 'average'
+
+
+2D/3D VISUALS:
+  When Lloyds method is used the centroids are shown. They are
+  displayed as the larger points with matching color of cluster.

@@ -32,8 +32,8 @@ except ImportError:
 
 def find_in_cluster (point, clusters):
   clustering = []
-  for c_num, c in enumerate( sorted( clusters.values() ) ):
-    if d in c:
+  for c_num, key in enumerate( sorted(clusters) ):
+    if point in clusters[key]:
       return c_num
 
 fname = sys.argv[1]
@@ -158,7 +158,7 @@ if cluster_alg == 'kmeans':
   if len( dataset[0] ) == 2 and twoD_supported:
     # generate random colors for each cluster
     colors = {}
-    for c_num, c in enumerate(clusters.values()):
+    for c_num, c in enumerate( sorted(centers) ):
       colors[c_num] = np.random.rand( 4 )  # because its an RGBA value
 
     for d in dataset:
@@ -167,6 +167,13 @@ if cluster_alg == 'kmeans':
       color = colors[ find_in_cluster (d, clusters) ]
 
       plt.scatter(x, y, s=80, c=color, alpha=0.8)
+
+    for key, c in enumerate( sorted(centers) ):
+      x = c[0]
+      y = c[1]
+      color = colors[key]
+
+      plt.scatter(x, y, s=240, c=color, alpha=0.8)
     plt.show()
 
   # ---- 3D Color Coded Scatter Plot -----
@@ -174,7 +181,7 @@ if cluster_alg == 'kmeans':
   if len( dataset[0] ) == 3 and twoD_supported and threeD_supported:
     # generate random colors for each cluster
     colors = {}
-    for c_num, c in enumerate(clusters.values()):
+    for c_num, c in enumerate( sorted(centers) ):
       colors[c_num] = np.random.rand( 4 ) # because its an RGBA value
 
     fig = plt.figure()
@@ -187,6 +194,14 @@ if cluster_alg == 'kmeans':
       color = colors[ find_in_cluster (d, clusters) ]
 
       ax.scatter(x, y, z, s=40, c=color, alpha=0.8)
+
+    for key, c in enumerate( sorted(centers) ):
+      x = c[0]
+      y = c[1]
+      z = c[2]
+      color = colors[key]
+
+      ax.scatter(x, y, z, s=160, c=color, alpha=0.8)
     plt.show()
 
 # ------------------ AVERAGE LINKAGE CLUSTERING ------------------
@@ -260,7 +275,7 @@ if cluster_alg == 'average':
   if len( dataset[0] ) == 2 and twoD_supported:
     # generate random colors for each cluster
     colors = {}
-    for c_num, c in enumerate(clusters.values()):
+    for c_num, c in enumerate(clusters.keys()):
       colors[c_num] = np.random.rand( 4 )  # because its an RGBA value
 
     for d in dataset:
@@ -276,7 +291,7 @@ if cluster_alg == 'average':
   if len( dataset[0] ) == 3 and twoD_supported and threeD_supported:
     # generate random colors for each cluster
     colors = {}
-    for c_num, c in enumerate(clusters.values()):
+    for c_num, c in enumerate(clusters.keys()):
       colors[c_num] = np.random.rand( 4 ) # because its an RGBA value
 
     fig = plt.figure()
