@@ -121,7 +121,7 @@ def kmeans_cost (clusters, centers):
         distance = 0
         for v, c in zip(vector, center):
           distance += ( (v - c)**2 )
-    km_cost += distance
+        km_cost += distance
 
   return km_cost
 
@@ -181,7 +181,7 @@ if cluster_alg == 'kmeans':
       color = colors[ find_in_cluster (d, clusters) ]
 
       plt.scatter(x, y, s=80, c=color, alpha=0.8)
-
+    print(centers)
     for key, c in enumerate( sorted(centers) ):
       x = c[0]
       y = c[1]
