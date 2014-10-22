@@ -31,3 +31,8 @@ USE:
 2D/3D VISUALS:
   When Lloyds method is used the centroids are shown. They are
   displayed as the larger points with matching color of cluster.
+
+  NOTE: If the colors in different clusters look the same, they are
+        not. They are just very similar shades. This is due to random
+        infinite color generation. Simply run the program again to
+        get better, more significant color generations.
