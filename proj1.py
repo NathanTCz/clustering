@@ -181,7 +181,7 @@ if cluster_alg == 'kmeans':
       color = colors[ find_in_cluster (d, clusters) ]
 
       plt.scatter(x, y, s=80, c=color, alpha=0.8)
-    print(centers)
+    
     for key, c in enumerate( sorted(centers) ):
       x = c[0]
       y = c[1]
